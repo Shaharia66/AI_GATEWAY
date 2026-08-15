@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: ./backend
+    container_name: ai-gateway-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      # Tells the backend to store its SQLite DB on the mounted volume
+      # below, so usage history survives container restarts/rebuilds.
+      USAGE_DB_PATH: /app/data/usage.db
+    volumes:
+      - backend_data:/app/data
+    expose:
+      - "8000"
+
+  frontend:
+    build: ./frontend
+    container_name: ai-gateway-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:

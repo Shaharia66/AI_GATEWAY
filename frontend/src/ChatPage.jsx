@@ -38,8 +38,10 @@ function Badge({ text, color }) {
 }
 
 export default function ChatPage() {
+  // Using ?? instead of || so an intentionally empty string (production,
+  // same-origin via nginx) isn't overridden by the localhost fallback.
   const [baseUrl, setBaseUrl] = useState(
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
+    import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000"
   );
   const [apiKey, setApiKey] = useState(
     import.meta.env.VITE_GATEWAY_API_KEY || "dev-key-123"

@@ -2,13 +2,17 @@ import os
 import sqlite3
 import time
 
-# Lives next to the project root, not inside app/, so it survives
-# even if you delete/recreate the app folder during development.
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "usage.db")
+# Configurable so Docker can point this at a mounted volume (persists across
+# container restarts). Falls back to the old local-dev location if unset -
+# your existing local setup keeps working exactly as before.
+DB_PATH = os.getenv("USAGE_DB_PATH") or os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "usage.db"
+)
 
 
 def init_db() -> None:
     """Creates the requests table if it doesn't already exist. Safe to call every startup."""
+    os.makedirs(os.path.dirname(DB_PATH) or ".", exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     conn.execute(
         """

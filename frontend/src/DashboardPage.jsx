@@ -93,8 +93,11 @@ function Badge({ text, color }) {
 }
 
 export default function DashboardPage() {
+  // Using ?? instead of || so an intentionally empty string (production,
+  // same-origin via nginx) isn't overridden by the localhost fallback -
+  // "" is falsy in JS but is a valid, meaningful value here.
   const [baseUrl, setBaseUrl] = useState(
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
+    import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000"
   );
   const [apiKey, setApiKey] = useState(
     import.meta.env.VITE_GATEWAY_API_KEY || "dev-key-123"
@@ -246,8 +249,8 @@ export default function DashboardPage() {
             fontSize: 13,
           }}
         >
-          Can't reach the gateway at <code>{baseUrl}</code>. Make sure <code>uvicorn</code> is
-          running and CORS is enabled in <code>app/main.py</code>. ({error})
+          Can't reach the gateway at <code>{baseUrl || "(same origin)"}</code>. Make sure the
+          backend is running and reachable. ({error})
         </div>
       )}
 

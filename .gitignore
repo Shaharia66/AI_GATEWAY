@@ -1,0 +1,33 @@
+# ===== Backend (Python) =====
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+*.pyc
+backend/.env
+backend/usage.db
+backend/.pytest_cache/
+
+# ===== Frontend (Node/React) =====
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# ===== Editor / IDE =====
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db

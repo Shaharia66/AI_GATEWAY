@@ -6,8 +6,6 @@ services:
     env_file:
       - ./backend/.env
     environment:
-      # Tells the backend to store its SQLite DB on the mounted volume
-      # below, so usage history survives container restarts/rebuilds.
       USAGE_DB_PATH: /app/data/usage.db
     volumes:
       - backend_data:/app/data
@@ -20,6 +18,12 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      # Mounts the real certificate files from the host VM into the
+      # container, read-only - nginx reads them directly, no need to
+      # rebuild the image when the cert renews.
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - backend
 
